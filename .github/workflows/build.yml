@@ -27,9 +27,8 @@ jobs:
           rm -rf "$HOME/sdks-temp"
 
       - name: Build DEB Package
-        env:
-          THEOS: ${{ runner.home }}/theos
         run: |
+          export THEOS="$HOME/theos"
           make clean package FINALPACKAGE=1
 
       - name: Upload DEB Artifact
