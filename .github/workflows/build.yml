@@ -1,0 +1,35 @@
+name: Build Rootful DEB
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Theos and iOS SDK
+        run: |
+          git clone --recursive https://github.com $HOME/theos
+          mkdir -p $HOME/theos/sdks
+          curl -L https://github.com -o sdks.zip
+          unzip -q sdks.zip
+          mv sdks-master/*.sdk $HOME/theos/sdks/
+          rm -rf sdks.zip sdks-master
+
+      - name: Build DEB Package
+        env:
+          THEOS: ${{ runner.home }}/theos
+        run: |
+          make clean package FINALPACKAGE=1
+
+      - name: Upload DEB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FacebookLegacyFix-deb
+          path: packages/*.deb
