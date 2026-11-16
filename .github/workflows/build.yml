@@ -20,13 +20,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh repo clone theos/theos "$HOME/theos" -- --recursive
+          gh repo clone theos/theos "$HOME/theos" -- --recursive --depth 1
           mkdir -p "$HOME/theos/sdks"
-          SDK_HOST="github.com"
-          curl -L "https://${SDK_HOST}/theos/sdks/archive/refs/heads/master.zip" -o sdks.zip
-          unzip -q sdks.zip
-          mv sdks-master/*.sdk "$HOME/theos/sdks/"
-          rm -rf sdks.zip sdks-master
+          gh repo clone theos/sdks "$HOME/sdks-temp" -- --depth 1
+          cp -R "$HOME/sdks-temp/"*.sdk "$HOME/theos/sdks/"
+          rm -rf "$HOME/sdks-temp"
 
       - name: Build DEB Package
         env:
