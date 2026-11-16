@@ -1,0 +1,9 @@
+Package: com.custom.fblegacyvideofix
+Name: FB 4.5.6 Video Fix
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: Fixes video playback and legacy API endpoints for Facebook v4.5.6 on iOS 14.3.
+Maintainer: Developer
+Author: Developer
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000)
