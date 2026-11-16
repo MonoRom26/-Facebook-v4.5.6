@@ -17,10 +17,13 @@ jobs:
         run: brew install ldid xz dpkg
 
       - name: Install Theos and iOS SDK
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git clone --recursive "https://github.com" "$HOME/theos"
+          gh repo clone theos/theos "$HOME/theos" -- --recursive
           mkdir -p "$HOME/theos/sdks"
-          curl -L "https://github.com" -o sdks.zip
+          SDK_HOST="github.com"
+          curl -L "https://${SDK_HOST}/theos/sdks/archive/refs/heads/master.zip" -o sdks.zip
           unzip -q sdks.zip
           mv sdks-master/*.sdk "$HOME/theos/sdks/"
           rm -rf sdks.zip sdks-master
